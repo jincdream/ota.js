@@ -12,7 +12,10 @@ module.config = function(config){
 }
 module.define = function(name, fn) {
   var _module = this;
-  var base = _module.mods['base'];
+  var base = _module.mods['base']
+  var requireOnce = function(name){
+    return _module.mods[name].exports
+  }
   if (!_module.mods[name]) {
     var o = _module.mods[name] = {};
     var e = _module.mods[name].exports = {};
@@ -20,10 +23,10 @@ module.define = function(name, fn) {
     var o = _module.mods[name]
     var e = _module.mods[name].exports
   }
-  fn.apply(base ? base.exports : _module.w, [o, e]);
+  fn.apply(base ? base.exports : _module.w, [requireOnce,o, e]);
   _module.mods[name].loaded = !0
 };
-module.define('base', function(module, exports) {
+module.define('base', function(require,module, exports) {
   var _getClsE = function(searchClass, node, tag) {
     var classElements = [];
     var end = [];
@@ -173,7 +176,9 @@ module.define('base', function(module, exports) {
         chrome: /chrome/.test(ua),
         safari: /safari/.test(ua),
         webkit: /applewebkit/.test(ua),
-        ie6: !window.XMLHttpRequest
+        ie6: !window.XMLHttpRequest,
+        ltIe10: checkCss3.trf,
+        ltIe9: checkCss3.transform
       };
     })(window.navigator.userAgent.toLowerCase()),
     extend: function(target, source) {
@@ -430,7 +435,7 @@ module.require = function(names, cb) {
 };
 
 
-module.define('ieBug', function(module, exports) {
+module.define('ieBug', function(require,module, exports) {
   var each = this.fastEach;
   exports.png = function(els) {
     each(els, function(el, i) {
@@ -445,7 +450,18 @@ module.define('ieBug', function(module, exports) {
     });
   }
 });
-module.define('animate',function(module,exports){
+module.define('animate',function(require,module,exports){
+  var sto = window.setTimeout;
+
+  function unit(val) {
+    var aotu = val === 'auto';
+    var u = aotu ? 'px' : '';
+    var v = aotu ? 0 : (val + '').replace(/(\d+)(.*)/, function(a, v, _u) {
+      u = _u;
+      return v;
+    });
+    return [v, u];
+  }
   var animate = module.exports = function(elm, name, value, time) {
     var style = null;
     var oVal = '';
@@ -474,7 +490,7 @@ module.define('animate',function(module,exports){
     }
 
     function moveA() {
-      if (start < end) {
+      if (start < end - 10) {
         move();
         sto(moveA, fps);
       } else {
@@ -483,7 +499,7 @@ module.define('animate',function(module,exports){
     }
 
     function moveB() {
-      if (start > end) {
+      if (start > end - 10) {
         move();
         sto(moveB, fps);
       } else {
@@ -502,4 +518,3 @@ module.define('animate',function(module,exports){
     }
   }
 })
-

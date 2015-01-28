@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>baseTest</title>
+</head>
+<body>
+  <style>
+    #slide{
+
+    }
+  </style>
+  <div id="slide">
+    <img style="background:#000" src="" alt="" width="200" height="100">
+    <img style="background:#2cc" src="" alt="" width="200" height="100">
+    <img style="background:#2c0" src="" alt="" width="200" height="100">
+    <img style="background:#90c" src="" alt="" width="200" height="100">
+  </div>
+
+</body>
+<script src="../src/base.js"></script>
+<script>
+  module.require(['animate'],function(animate){
+
+  })
+  module.define('Slide',function(require,module,exports){
+    var $ = this
+    var each = $.each
+    var addC = $.addClass
+    var animate = require('animate')
+    var ltIe10 = $.browser.ltIe10
+    var moveHandle = (function(notSupTrs){
+      if(notSupTrs){
+        return function(elm,dir,v){
+          animate(elm,dir,v,400)
+        }
+      }
+    })(/*ltIe10*/!0)
+    var Slide = module.exports = function(option){
+      this.elm = option.target
+      this.elms = this.elm.elm
+      this.extend = option.extend
+      this.onchanged = option.onchanged
+      var targetOne = this.elms[0]
+      this.parent = targetOne.parentNode
+      this.width = targetOne.clientWidth
+      this.height = targetOne.clientHeight
+      this.init()
+      return this
+    }
+    //transform
+    Slide.prototype.init = function(){
+      var _slide = this
+      var _class = '.Slide-ini-js{'
+      + 'transform-style: preserve-3d;'
+      + '-webkit-transform-style: preserve-3d;'
+      + 'position:absolute;'
+      + 'left:0;'
+      + 'top:0;'
+      + 'width:100%;'
+      + 'transition:all .4s ease-out;'
+      + '-webkit-transition:all .4s ease-out;'
+      + '}'
+      + '.Slide-ini-parent-js{'
+      + 'position:relative;'
+      + 'overflow:hidden;'
+      + 'width:'+ _slide.width +'px;'
+      + 'height:'+ _slide.height +'px;'
+      + 'backface-visibility: visible;'
+      + 'perspective-origin: 50% 50%;'
+      + 'transform-style: preserve-3d;'
+      + '-webkit-backface-visibility: visible;'
+      + '-webkit-perspective-origin: 50% 50%;'
+      + '-webkit-transform-style: preserve-3d;'
+      + '}'
+      $.addStyle(_class)
+      $.addClass(_slide.parent,'Slide-ini-parent-js')
+      this.move(0,function(elm){
+        _slide.elm.addClass('Slide-ini-js')
+      })
+    }
+    Slide.prototype._move = function(n,fn){
+      var _self = this
+      var exd = fn
+      _self.n = n || 0
+      each(_self.elms,function(elm,i){
+        //elm.style.webkitTransform = 'translate3d('+((i-_self.n)*100)+'%,0,0)'
+        moveHandle.call(_self,elm,'left',(i-_self.n)* _self.width)
+        exd && exd(elm)
+      })
+    }
+    Slide.prototype.move = function(n,fn){
+      var _self = this
+      _self._move(n)
+      fn && fn()
+      _self.onchanged && _self.onchanged(n)
+    }
+    Slide.prototype.prev = function(){
+      var _self = this
+      if(_self.n > 0){
+        _self.move(--_self.n)
+      }else if(_self.n === 0){
+        _self.move(_self.n = _self.elms.length - 1)
+      }
+    }
+    Slide.prototype.next = function(){
+      var _self = this
+      var len = _self.elms.length - 1
+      if(_self.n < len){
+        _self.move(++_self.n)
+      }else if(_self.n === len){
+        _self.move(_self.n = 0)
+      }
+    }
+  })
+  module.require(['Slide'],function(Slide){
+    var $ = this
+    var slide = new Slide({
+      target : $('#slide img')
+    })
+    window.setInterval(function(){
+      slide.prev()
+    },1400)
+  })
+</script>
+</html>
