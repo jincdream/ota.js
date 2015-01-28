@@ -1,10 +1,10 @@
 var module = {};
 module.mods = {};
 module.w = {};
-module.config = function(config){
+module.config = function(config) {
   var base = config.baseUrl || './'
   this._alies = {}
-  for(var n in config.alies){
+  for (var n in config.alies) {
     var alies = this._alies[n] = {}
     alies.src = base + config.alies[n]
     alies.callback = []
@@ -13,20 +13,20 @@ module.config = function(config){
 module.define = function(name, fn) {
   var _module = this;
   var base = _module.mods['base']
-  var requireOnce = function(name){
+  var requireOnce = function(name) {
     return _module.mods[name].exports
   }
   if (!_module.mods[name]) {
     var o = _module.mods[name] = {};
     var e = _module.mods[name].exports = {};
-  }else{
+  } else {
     var o = _module.mods[name]
     var e = _module.mods[name].exports
   }
-  fn.apply(base ? base.exports : _module.w, [requireOnce,o, e]);
+  fn.apply(base ? base.exports : _module.w, [requireOnce, o, e]);
   _module.mods[name].loaded = !0
 };
-module.define('base', function(require,module, exports) {
+module.define('base', function(require, module, exports) {
   var _getClsE = function(searchClass, node, tag) {
     var classElements = [];
     var end = [];
@@ -51,7 +51,7 @@ module.define('base', function(require,module, exports) {
       return end;
     }
   };
-  var _sizzle = function(str,node) {
+  var _sizzle = function(str, node) {
     var ids = str.split(/\s/);
     var regA = /#/;
     var regB = /\./;
@@ -83,38 +83,38 @@ module.define('base', function(require,module, exports) {
     }
     return node;
   };
-  var checkCss3 = (function(){
+  var checkCss3 = (function() {
     var div = document.createElement('div')
     var style = div.style
     var regTrs = /^[webkit]*[Tt]ransition$/
     var n
     var trf = !0
     var css3 = {}
-    for(n in style){
+    for (n in style) {
       // if(/^[webkit|ms]*[Tt]ransform$/.test(n)){
       //   trf = !0
       // }
-      if(trf && regTrs.test(n)){
+      if (trf && regTrs.test(n)) {
         trf = !1
         css3.trf = !0
       }
-      if(!!~n.indexOf('transform')){
+      if (!!~n.indexOf('transform')) {
         css3.transform = 'transform'
         css3.b = ''
-      }else if(!!~n.indexOf('webkitTransform')){
+      } else if (!!~n.indexOf('webkitTransform')) {
         css3.transform = 'webkitTransition'
-        css3.b ='webkitT'
-      }else if(!!~n.indexOf('msTransform')){
+        css3.b = 'webkitT'
+      } else if (!!~n.indexOf('msTransform')) {
         css3.transform = 'msTransform'
         css3.b = 'msT'
       }
-        // case !!(~n.indexOf('msTransform')):
+      // case !!(~n.indexOf('msTransform')):
     }
     return css3
   }())
   var loadEvent = checkCss3.trf ? 'onload' : 'onreadystatechange'
-  // >ie9( server )will trigger second onreadystatechange event:
-  // And script.readyState is loading || loaded
+    // >ie9( server )will trigger second onreadystatechange event:
+    // And script.readyState is loading || loaded
   var loadEnd = checkCss3.trf ? 0 : 1
   var _loadedScript = []
   var Core = {
@@ -127,6 +127,21 @@ module.define('base', function(require,module, exports) {
       }
       first.length = i
       return first
+    },
+    // var Create = $.createClass
+    createClass: function(name, init) {
+      var self = this
+      self[name] = function() {
+        var _p
+        if (!(this instanceof self[name])) {
+          _p = (new self[name])
+          init && _p.init.apply(_p, arguments)
+        } else {
+          _p = this
+        }
+        return _p
+      }
+      return self[name]
     },
     makeArray: function(elms) {
       this._merge(this, elms)
@@ -177,7 +192,7 @@ module.define('base', function(require,module, exports) {
         safari: /safari/.test(ua),
         webkit: /applewebkit/.test(ua),
         ie6: !window.XMLHttpRequest,
-        ltIe10: checkCss3.trf,
+        ltIe10: !checkCss3.trf,
         ltIe9: checkCss3.transform
       };
     })(window.navigator.userAgent.toLowerCase()),
@@ -198,14 +213,14 @@ module.define('base', function(require,module, exports) {
       if (splice) newAry.splice(splice[0], splice[1]);
       return newAry;
     },
-    checkTransform :!1 ,
+    css3Fix: checkCss3,
     addStyle: function(cssTxt, id) {
       var styleElm = document.createElement('style')
       id = id || 'css-id-' + (+new Date)
       styleElm.id = id
-      try{
+      try {
         styleElm.innerHTML = cssTxt
-      }catch(e){
+      } catch (e) {
         // <ie9
         styleElm.type = "text/css"
         styleElm.styleSheet.cssText = cssTxt
@@ -213,22 +228,22 @@ module.define('base', function(require,module, exports) {
       DomHandle.j('head')[0].appendChild(styleElm)
       return id
     },
-    loadScript: function(src,next){
-      if(!!~Core.indexOf(_loadedScript,src))return next && next(!1)
+    loadScript: function(src, next) {
+      if (!!~Core.indexOf(_loadedScript, src)) return next && next(!1)
       var _script = document.createElement('script')
       var _loadEnd = loadEnd
       _loadedScript.push(src)
-      _script.setAttribute('src',src)
+      _script.setAttribute('src', src)
       _script.id = 'js-id-' + (+new Date)
       document.body.appendChild(_script)
-      _script[loadEvent] = function(){
+      _script[loadEvent] = function() {
         // console.log(_script.readyState)
         !(_loadEnd--) && next && next(src)
       }
       return _script.id
     },
-    load: function(obj){
-      Core.fastEach(obj,function(src,i){
+    load: function(obj) {
+      Core.fastEach(obj, function(src, i) {
         Core.loadScript(src)
       })
     },
@@ -239,7 +254,7 @@ module.define('base', function(require,module, exports) {
      *  child:
      * }
      * */
-    loader: function(scripts){
+    loader: function(scripts) {
       // var first
       // var _name = ''
       // for(_name in scripts){
@@ -262,7 +277,7 @@ module.define('base', function(require,module, exports) {
         return function(ary, x) {
           var n = -1
           Core.fastEach(ary, function(v, i) {
-            if (v === x){
+            if (v === x) {
               n = i
               return
             }
@@ -311,14 +326,14 @@ module.define('base', function(require,module, exports) {
       })
     },
     addClass: function(elm, className) {
-      this._classHandle(elm, className, function(reg, el, classes,className) {
+      this._classHandle(elm, className, function(reg, el, classes, className) {
         if (!reg.test(el.className)) {
           classes.push(className)
         }
       })
     },
     removeClass: function(elm, className) {
-      this._classHandle(elm, className, function(reg, el, classes,className) {
+      this._classHandle(elm, className, function(reg, el, classes, className) {
         var index = Core.indexOf(classes, className)
         if (!index || !~index) return;
         classes.splice(index, 1)
@@ -355,21 +370,21 @@ module.define('base', function(require,module, exports) {
         elm.removeEventListener(type, fn, false);
       }
     },
-    css3TransitionSupport : (function(){
+    css3TransitionSupport: (function() {
       var div = document.createElement('div');
       var style = div.style;
       var webkit = !1;
       var ok = !1;
       var no = !0;
       var rz = '';
-      for(var name in style){
-        if(/^transition$/.test(name)){
+      for (var name in style) {
+        if (/^transition$/.test(name)) {
           ok = !0;
           break;
-        }else if(/^webkitTransition$/.test(name)){
+        } else if (/^webkitTransition$/.test(name)) {
           webkit = !0;
           break;
-        }else{
+        } else {
           no = !1;
         }
       }
@@ -400,10 +415,10 @@ module.define('base', function(require,module, exports) {
   Core.extend(Nijc.prototype, DomHandle)
   Nijc.prototype.init = function(elmStr) {
     var elm = this.j(elmStr)
-    if(!elm)return this
+    if (!elm) return this
     var self = this
-    if(elm.nodeType) elm = [elm]
-    if(!Core.isAry(elm))elm = Core.toAry(elm)
+    if (elm.nodeType) elm = [elm]
+    if (!Core.isAry(elm)) elm = Core.toAry(elm)
     this.elm = elm
     this.length = elm.length
     this.makeArray(elm)
@@ -421,21 +436,26 @@ module.require = function(names, cb) {
   var len = names.length
   var src = ''
   base.each(names, function(name, i) {
-    if(mods[name] && mods[name].loaded){
+    if (mods[name] && mods[name].loaded) {
       fn[i] = mods[name].exports
-      if(--len === 0)cb.apply(base, fn)
-    }else{
+      if (--len === 0) cb.apply(base, fn)
+    } else {
       src = self._alies[name].src
-      base.loadScript(src,function(src){
+      base.loadScript(src, function(src) {
+        if (name === 'pc') {
+          mods[name] = {
+            exports: window.pc
+          }
+        }
         fn[i] = mods[name].exports
-        if(--len === 0)cb.apply(base, fn)
+        if (--len === 0) cb.apply(base, fn)
       })
     }
   });
 };
 
 
-module.define('ieBug', function(require,module, exports) {
+module.define('ieBug', function(require, module, exports) {
   var each = this.fastEach;
   exports.png = function(els) {
     each(els, function(el, i) {
@@ -443,14 +463,16 @@ module.define('ieBug', function(require,module, exports) {
       var w = el.clientWidth;
       var h = el.clientHeight;
       var bg = cStyle.backgroundImage.replace(/url\(|\)/g, '');
-      el.style.filter +='progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src=' + bg + ')';
+      el.style.filter +=
+        'progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src=' +
+        bg + ')';
       el.style.background = "url('fkie.jpg')";
       el.style.width = w + 'px';
       el.style.height = h + 'px';
     });
   }
 });
-module.define('animate',function(require,module,exports){
+module.define('animate', function(require, module, exports) {
   var sto = window.setTimeout;
 
   function unit(val) {
@@ -477,6 +499,7 @@ module.define('animate',function(require,module,exports){
     var start = +_unit[0];
     var u = _unit[1];
     var end = value;
+    var _end = end - 10
     var css = name;
     var val = end - start;
     var fps = 21;
@@ -490,7 +513,7 @@ module.define('animate',function(require,module,exports){
     }
 
     function moveA() {
-      if (start < end - 10) {
+      if (start < _end) {
         move();
         sto(moveA, fps);
       } else {
@@ -499,7 +522,7 @@ module.define('animate',function(require,module,exports){
     }
 
     function moveB() {
-      if (start > end - 10) {
+      if (start > _end) {
         move();
         sto(moveB, fps);
       } else {
@@ -515,6 +538,41 @@ module.define('animate',function(require,module,exports){
       sto(moveA, fps);
     } else {
       sto(moveB, fps);
+    }
+  }
+})
+module.define('Temp', function(require, module, exports) {
+  var $ = this
+  var Create = $.createClass
+  var Temp = module.exports = Create('Temp', !0)
+  Temp.prototype = {
+    constructor: Temp,
+    init: function(temp) {
+      var self = this
+      self._tempFn = temp
+    },
+    toArray: function(dataObj, filter) {
+      var self = this
+      var _str = self._tempFn.toString()
+        .replace(/[\r\n\f\t]/g, '')
+        .replace(/.*?\/\*(.*?)\*\/[\s]*\}$/, '$1')
+      var str = []
+      var len = dataObj.length
+      if (!$.isAry(dataObj)) {
+        dataObj = [dataObj]
+      }
+      while (len--) {
+        str[len] = _str.replace(/\{\{(\S*?)\}\}/g, function(m, a) {
+          filter && filter(m, a)
+          var obj = dataObj[len]
+          if (obj[a]) return obj[a]
+          else return ''
+        })
+      }
+      return str
+    },
+    toHtml: function(dataObj, filter) {
+      return this.toArray(dataObj, filter).join('')
     }
   }
 })

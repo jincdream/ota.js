@@ -29,13 +29,43 @@
     var addC = $.addClass
     var animate = require('animate')
     var ltIe10 = $.browser.ltIe10
+    var css3Fix = $.css3Fix.b
     var moveHandle = (function(notSupTrs){
       if(notSupTrs){
         return function(elm,dir,v){
-          animate(elm,dir,v,400)
+          if(dir === 'x')dir = 'left'
+          if(dir === 'y')dir = 'top'
+          animate(elm,dir,v*this.width,400)
+        }
+      }else{
+        return function(elm,dir,v){
+          if(dir === 'x')v = 'translate3d('+(v*100)+'%,0,0)'
+          if(dir === 'y')v = 'translate3d(0,'+(v*100)+'%,0)'
+          elm.style[css3Fix + 'ransform'] = v
         }
       }
-    })(/*ltIe10*/!0)
+    })(/*ltIe10*/ltIe10)
+    var _trf = ltIe10 ? '' : 'transition:all .4s ease-out;-webkit-transition:all .4s ease-out;'
+    var _class = '.Slide-ini-js{'
+      + 'transform-style: preserve-3d;'
+      + '-webkit-transform-style: preserve-3d;'
+      + 'position:absolute;'
+      + 'left:0;'
+      + 'top:0;'
+      + 'width:100%;'
+      + _trf
+      + '}'
+      + '.Slide-ini-parent-js{'
+      + 'position:relative;'
+      + 'overflow:hidden;'
+      + 'backface-visibility: visible;'
+      + 'perspective-origin: 50% 50%;'
+      + 'transform-style: preserve-3d;'
+      + '-webkit-backface-visibility: visible;'
+      + '-webkit-perspective-origin: 50% 50%;'
+      + '-webkit-transform-style: preserve-3d;'
+      + '}'
+    $.addStyle(_class)
     var Slide = module.exports = function(option){
       this.elm = option.target
       this.elms = this.elm.elm
@@ -51,30 +81,12 @@
     //transform
     Slide.prototype.init = function(){
       var _slide = this
-      var _class = '.Slide-ini-js{'
-      + 'transform-style: preserve-3d;'
-      + '-webkit-transform-style: preserve-3d;'
-      + 'position:absolute;'
-      + 'left:0;'
-      + 'top:0;'
-      + 'width:100%;'
-      + 'transition:all .4s ease-out;'
-      + '-webkit-transition:all .4s ease-out;'
-      + '}'
-      + '.Slide-ini-parent-js{'
-      + 'position:relative;'
-      + 'overflow:hidden;'
-      + 'width:'+ _slide.width +'px;'
-      + 'height:'+ _slide.height +'px;'
-      + 'backface-visibility: visible;'
-      + 'perspective-origin: 50% 50%;'
-      + 'transform-style: preserve-3d;'
-      + '-webkit-backface-visibility: visible;'
-      + '-webkit-perspective-origin: 50% 50%;'
-      + '-webkit-transform-style: preserve-3d;'
-      + '}'
-      $.addStyle(_class)
+      var tabId = +new Date
+      var tabCss = '.tab-'+ tabId + '{'
+        +'width:'+ _slide.width +'px;height:'+ _slide.height +'px;}'
+      $.addStyle(tabCss)
       $.addClass(_slide.parent,'Slide-ini-parent-js')
+      $.addClass(_slide.parent,'tab-'+ tabId)
       this.move(0,function(elm){
         _slide.elm.addClass('Slide-ini-js')
       })
@@ -85,7 +97,7 @@
       _self.n = n || 0
       each(_self.elms,function(elm,i){
         //elm.style.webkitTransform = 'translate3d('+((i-_self.n)*100)+'%,0,0)'
-        moveHandle.call(_self,elm,'left',(i-_self.n)* _self.width)
+        moveHandle.call(_self,elm,'x',(i-_self.n))
         exd && exd(elm)
       })
     }
