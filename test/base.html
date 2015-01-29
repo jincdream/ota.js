@@ -6,19 +6,80 @@
 </head>
 <body>
   <style>
-    #slide{
-
+    .bslide,.tabContent,.w{
+      width:200px;
+      height:100px;
+      overflow:hidden;
+    }
+    .bslide img{
+      float:left;
     }
   </style>
-  <div id="slide">
+  <!-- <div id="slide">
     <img style="background:#000" src="" alt="" width="200" height="100">
     <img style="background:#2cc" src="" alt="" width="200" height="100">
     <img style="background:#2c0" src="" alt="" width="200" height="100">
     <img style="background:#90c" src="" alt="" width="200" height="100">
   </div>
-
+  <div id="slide1">
+    <img style="background:#000" src="" alt="" width="200" height="100">
+    <img style="background:#2cc" src="" alt="" width="200" height="100">
+    <img style="background:#2c0" src="" alt="" width="200" height="100">
+    <img style="background:#90c" src="" alt="" width="200" height="100">
+  </div>
+  <div id="slide2">
+    <img style="background:#000" src="" alt="" width="200" height="100">
+    <img style="background:#2cc" src="" alt="" width="200" height="100">
+    <img style="background:#2c0" src="" alt="" width="200" height="100">
+    <img style="background:#90c" src="" alt="" width="200" height="100">
+  </div>
+  <div id="slide3">
+    <img style="background:#000" src="" alt="" width="200" height="100">
+    <img style="background:#2cc" src="" alt="" width="200" height="100">
+    <img style="background:#2c0" src="" alt="" width="200" height="100">
+    <img style="background:#90c" src="" alt="" width="200" height="100">
+  </div>
+  <div id="slide4">
+    <img style="background:#000" src="" alt="" width="200" height="100">
+    <img style="background:#2cc" src="" alt="" width="200" height="100">
+    <img style="background:#2c0" src="" alt="" width="200" height="100">
+    <img style="background:#90c" src="" alt="" width="200" height="100">
+  </div> -->
+  <div id="Bslide" class="bslide">
+    <div class="w">
+      <img style="background:#000" src="" alt="" width="200" height="100">
+      <img style="background:#2cc" src="" alt="" width="200" height="100">
+      <img style="background:#2c0" src="" alt="" width="200" height="100">
+      <img style="background:#90c" src="" alt="" width="200" height="100">
+    </div>
+  </div>
+  <div id="Bslide1" class="bslide">
+    <img style="background:#000" src="" alt="" width="200" height="100">
+    <img style="background:#2cc" src="" alt="" width="200" height="100">
+    <img style="background:#2c0" src="" alt="" width="200" height="100">
+    <img style="background:#90c" src="" alt="" width="200" height="100">
+  </div>
+  <div id="Bslide2" class="bslide">
+    <img style="background:#000" src="" alt="" width="200" height="100">
+    <img style="background:#2cc" src="" alt="" width="200" height="100">
+    <img style="background:#2c0" src="" alt="" width="200" height="100">
+    <img style="background:#90c" src="" alt="" width="200" height="100">
+  </div>
+  <div id="Bslide3" class="bslide">
+    <img style="background:#000" src="" alt="" width="200" height="100">
+    <img style="background:#2cc" src="" alt="" width="200" height="100">
+    <img style="background:#2c0" src="" alt="" width="200" height="100">
+    <img style="background:#90c" src="" alt="" width="200" height="100">
+  </div>
+  <div id="Bslide4" class="bslide">
+    <img style="background:#000" src="" alt="" width="200" height="100">
+    <img style="background:#2cc" src="" alt="" width="200" height="100">
+    <img style="background:#2c0" src="" alt="" width="200" height="100">
+    <img style="background:#90c" src="" alt="" width="200" height="100">
+  </div>
 </body>
 <script src="../src/base.js"></script>
+<script src="http://js.3conline.com/min/temp/v2/core-pc_v1,dpl-tab_v2.js"></script>
 <script>
   module.require(['animate'],function(animate){
 
@@ -127,12 +188,66 @@
   })
   module.require(['Slide'],function(Slide){
     var $ = this
-    var slide = new Slide({
-      target : $('#slide img')
-    })
-    window.setInterval(function(){
-      slide.prev()
-    },1400)
+    // var slide = new Slide({
+    //   target : $('#slide img')
+    // })
+    // window.setInterval(function(){
+    //   slide.prev()
+    // },1400)
+    // var slide1 = new Slide({
+    //   target : $('#slide1 img')
+    // })
+    // window.setInterval(function(){
+    //   slide1.prev()
+    // },1400)
+    // var slide2 = new Slide({
+    //   target : $('#slide2 img')
+    // })
+    // window.setInterval(function(){
+    //   slide2.prev()
+    // },1400)
+    // var slide3 = new Slide({
+    //   target : $('#slide3 img')
+    // })
+    // window.setInterval(function(){
+    //   slide3.prev()
+    // },1400)
+    // var slide4 = new Slide({
+    //   target : $('#slide4 img')
+    // })
+    // window.setInterval(function(){
+    //   slide4.prev()
+    // },1400)
+  })
+  new pc.tab({
+    target: pc('#Bslide img'),
+    effect: 'slide',
+    autoPlay: !0,
+    control:!1
+  })
+  new pc.tab({
+    target: pc('#Bslide1 img'),
+    effect: 'slide',
+    autoPlay: !0,
+    control:!1
+  })
+  new pc.tab({
+    target: pc('#Bslide2 img'),
+    effect: 'slide',
+    autoPlay: !0,
+    control:!1
+  })
+  new pc.tab({
+    target: pc('#Bslide3 img'),
+    effect: 'slide',
+    autoPlay: !0,
+    control:!1
+  })
+  new pc.tab({
+    target: pc('#Bslide4 img'),
+    effect: 'slide',
+    autoPlay: !0,
+    control:!1
   })
 </script>
 </html>
