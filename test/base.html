@@ -15,80 +15,25 @@
       float:left;
     }
   </style>
-  <!-- <div id="slide">
-    <img style="background:#000" src="" alt="" width="200" height="100">
-    <img style="background:#2cc" src="" alt="" width="200" height="100">
-    <img style="background:#2c0" src="" alt="" width="200" height="100">
-    <img style="background:#90c" src="" alt="" width="200" height="100">
-  </div>
-  <div id="slide1">
-    <img style="background:#000" src="" alt="" width="200" height="100">
-    <img style="background:#2cc" src="" alt="" width="200" height="100">
-    <img style="background:#2c0" src="" alt="" width="200" height="100">
-    <img style="background:#90c" src="" alt="" width="200" height="100">
-  </div>
-  <div id="slide2">
-    <img style="background:#000" src="" alt="" width="200" height="100">
-    <img style="background:#2cc" src="" alt="" width="200" height="100">
-    <img style="background:#2c0" src="" alt="" width="200" height="100">
-    <img style="background:#90c" src="" alt="" width="200" height="100">
-  </div>
-  <div id="slide3">
-    <img style="background:#000" src="" alt="" width="200" height="100">
-    <img style="background:#2cc" src="" alt="" width="200" height="100">
-    <img style="background:#2c0" src="" alt="" width="200" height="100">
-    <img style="background:#90c" src="" alt="" width="200" height="100">
-  </div>
-  <div id="slide4">
-    <img style="background:#000" src="" alt="" width="200" height="100">
-    <img style="background:#2cc" src="" alt="" width="200" height="100">
-    <img style="background:#2c0" src="" alt="" width="200" height="100">
-    <img style="background:#90c" src="" alt="" width="200" height="100">
-  </div> -->
-  <div id="Bslide" class="bslide">
-    <div class="w">
-      <img style="background:#000" src="" alt="" width="200" height="100">
-      <img style="background:#2cc" src="" alt="" width="200" height="100">
-      <img style="background:#2c0" src="" alt="" width="200" height="100">
-      <img style="background:#90c" src="" alt="" width="200" height="100">
+  <div id="slide">
+    <div class="slideWraper">
+      <img style="background:#000" src="http://static.googleadsserving.cn/pagead/imgad?id=CICAgKCTyL3UvwEQ2AUYWjIIo4zpx3gRMts" alt="" width="600" height="400">
+      <img style="background:#2cc" src="http://static.googleadsserving.cn/pagead/imgad?id=CICAgKCTyL3UvwEQ2AUYWjIIo4zpx3gRMts" alt="" width="600" height="400">
+      <img style="background:#2c0" src="http://static.googleadsserving.cn/pagead/imgad?id=CICAgKCTyL3UvwEQ2AUYWjIIo4zpx3gRMts" alt="" width="600" height="400">
+      <img style="background:#90c" src="http://static.googleadsserving.cn/pagead/imgad?id=CICAgKCTyL3UvwEQ2AUYWjIIo4zpx3gRMts" alt="" width="600" height="400">
     </div>
   </div>
-  <div id="Bslide1" class="bslide">
-    <img style="background:#000" src="" alt="" width="200" height="100">
-    <img style="background:#2cc" src="" alt="" width="200" height="100">
-    <img style="background:#2c0" src="" alt="" width="200" height="100">
-    <img style="background:#90c" src="" alt="" width="200" height="100">
-  </div>
-  <div id="Bslide2" class="bslide">
-    <img style="background:#000" src="" alt="" width="200" height="100">
-    <img style="background:#2cc" src="" alt="" width="200" height="100">
-    <img style="background:#2c0" src="" alt="" width="200" height="100">
-    <img style="background:#90c" src="" alt="" width="200" height="100">
-  </div>
-  <div id="Bslide3" class="bslide">
-    <img style="background:#000" src="" alt="" width="200" height="100">
-    <img style="background:#2cc" src="" alt="" width="200" height="100">
-    <img style="background:#2c0" src="" alt="" width="200" height="100">
-    <img style="background:#90c" src="" alt="" width="200" height="100">
-  </div>
-  <div id="Bslide4" class="bslide">
-    <img style="background:#000" src="" alt="" width="200" height="100">
-    <img style="background:#2cc" src="" alt="" width="200" height="100">
-    <img style="background:#2c0" src="" alt="" width="200" height="100">
-    <img style="background:#90c" src="" alt="" width="200" height="100">
-  </div>
+
 </body>
 <script src="../src/base.js"></script>
 <script src="http://js.3conline.com/min/temp/v2/core-pc_v1,dpl-tab_v2.js"></script>
 <script>
-  module.require(['animate'],function(animate){
-
-  })
   module.define('Slide',function(require,module,exports){
+    var animate = require('animate')
+
     var $ = this
     var each = $.each
     var addC = $.addClass
-    var animate = require('animate')
     var ltIe10 = $.browser.ltIe10
     var css3Fix = $.css3Fix.b
     var moveHandle = (function(notSupTrs){
@@ -100,25 +45,19 @@
         }
       }else{
         return function(elm,dir,v){
-          if(dir === 'x')v = 'translate3d('+(v*100)+'%,0,0)'
-          if(dir === 'y')v = 'translate3d(0,'+(v*100)+'%,0)'
+          if(dir === 'x')v = 'translate3d('+v*this.width+'px,0,0)'
+          if(dir === 'y')v = 'translate3d(0,'+v*this.width+'px,0)'
           elm.style[css3Fix + 'ransform'] = v
         }
       }
     })(/*ltIe10*/ltIe10)
     var _trf = ltIe10 ? '' : 'transition:all .4s ease-out;-webkit-transition:all .4s ease-out;'
-    var _class = '.Slide-ini-js{'
-      + 'transform-style: preserve-3d;'
-      + '-webkit-transform-style: preserve-3d;'
-      + 'position:absolute;'
-      + 'left:0;'
-      + 'top:0;'
-      + 'width:100%;'
-      + _trf
-      + '}'
-      + '.Slide-ini-parent-js{'
-      + 'position:relative;'
-      + 'overflow:hidden;'
+    var _c3DFrom = 'Slide-3d-js'
+    var _cParent = 'Slide-parent-js'
+    var _cWrapper = 'Slide-wrapper-js'
+    var _cTarget = 'Slide-target-js'
+
+    var _class ='.' + _c3DFrom + '{'
       + 'backface-visibility: visible;'
       + 'perspective-origin: 50% 50%;'
       + 'transform-style: preserve-3d;'
@@ -126,41 +65,59 @@
       + '-webkit-perspective-origin: 50% 50%;'
       + '-webkit-transform-style: preserve-3d;'
       + '}'
+      + '.'+ _cParent +'{'
+      + 'position:relative;'
+      + 'overflow:hidden;'
+      + '}'
+      + '.'+_cTarget+','
+      + '.'+ _cWrapper +'{'
+      + 'transform-style: preserve-3d;'
+      + '-webkit-transform-style: preserve-3d;'
+      + 'position:absolute;'
+      + 'left:0;'
+      + 'top:0;'
+      + _trf
+      + '}'
     $.addStyle(_class)
     var Slide = module.exports = function(option){
+      this.n = 0
       this.elm = option.target
       this.elms = this.elm.elm
+      this.delay = 1400
       this.extend = option.extend
       this.onchanged = option.onchanged
       var targetOne = this.elms[0]
-      this.parent = targetOne.parentNode
+      this.wrapper = targetOne.parentNode
+      this.parent = this.wrapper.parentNode
       this.width = targetOne.clientWidth
       this.height = targetOne.clientHeight
+      this.moveHandle = moveHandle
       this.init()
+      option.autoPlay && this._autoPlay()
       return this
     }
     //transform
     Slide.prototype.init = function(){
       var _slide = this
-      var tabId = +new Date
-      var tabCss = '.tab-'+ tabId + '{'
+      var slideId = +new Date
+      var slideCss = '.'+ _cParent + slideId + '{'
         +'width:'+ _slide.width +'px;height:'+ _slide.height +'px;}'
-      $.addStyle(tabCss)
-      $.addClass(_slide.parent,'Slide-ini-parent-js')
-      $.addClass(_slide.parent,'tab-'+ tabId)
-      this.move(0,function(elm){
-        _slide.elm.addClass('Slide-ini-js')
+        + '.' + _cWrapper + slideId + '{'
+        +'width:'+ _slide.width*_slide.elms.length+'px;height:'+_slide.height+'px;}'
+      $.addStyle(slideCss)
+      $.addClass(_slide.parent,_cParent+' '+_cParent + slideId)
+      $.addClass(_slide.wrapper,_cWrapper+' '+_cWrapper + slideId)
+      _slide.elm.addClass(_cTarget)
+      _slide.elm.fastEach(function(elm,i){
+        _slide.moveHandle(elm,'x',i)
       })
     }
     Slide.prototype._move = function(n,fn){
       var _self = this
       var exd = fn
       _self.n = n || 0
-      each(_self.elms,function(elm,i){
-        //elm.style.webkitTransform = 'translate3d('+((i-_self.n)*100)+'%,0,0)'
-        moveHandle.call(_self,elm,'x',(i-_self.n))
-        exd && exd(elm)
-      })
+      _self.moveHandle(_self.wrapper,'x',-_self.n)
+      fn && fn(_self.n)
     }
     Slide.prototype.move = function(n,fn){
       var _self = this
@@ -185,69 +142,21 @@
         _self.move(_self.n = 0)
       }
     }
+    Slide.prototype._autoPlay = function(){
+      var _self = this
+      window.setInterval(function(){
+        _self.next()
+      },_self.delay)
+    }
   })
   module.require(['Slide'],function(Slide){
     var $ = this
-    // var slide = new Slide({
-    //   target : $('#slide img')
-    // })
-    // window.setInterval(function(){
-    //   slide.prev()
-    // },1400)
-    // var slide1 = new Slide({
-    //   target : $('#slide1 img')
-    // })
-    // window.setInterval(function(){
-    //   slide1.prev()
-    // },1400)
-    // var slide2 = new Slide({
-    //   target : $('#slide2 img')
-    // })
-    // window.setInterval(function(){
-    //   slide2.prev()
-    // },1400)
-    // var slide3 = new Slide({
-    //   target : $('#slide3 img')
-    // })
-    // window.setInterval(function(){
-    //   slide3.prev()
-    // },1400)
-    // var slide4 = new Slide({
-    //   target : $('#slide4 img')
-    // })
-    // window.setInterval(function(){
-    //   slide4.prev()
-    // },1400)
+    var slide = new Slide({
+      target : $('#slide img'),
+      autoPlay: !0
+    })
+
   })
-  new pc.tab({
-    target: pc('#Bslide img'),
-    effect: 'slide',
-    autoPlay: !0,
-    control:!1
-  })
-  new pc.tab({
-    target: pc('#Bslide1 img'),
-    effect: 'slide',
-    autoPlay: !0,
-    control:!1
-  })
-  new pc.tab({
-    target: pc('#Bslide2 img'),
-    effect: 'slide',
-    autoPlay: !0,
-    control:!1
-  })
-  new pc.tab({
-    target: pc('#Bslide3 img'),
-    effect: 'slide',
-    autoPlay: !0,
-    control:!1
-  })
-  new pc.tab({
-    target: pc('#Bslide4 img'),
-    effect: 'slide',
-    autoPlay: !0,
-    control:!1
-  })
+
 </script>
 </html>
